@@ -6,15 +6,19 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class EditorActivity extends AppCompatActivity {
@@ -33,6 +37,7 @@ public class EditorActivity extends AppCompatActivity {
         messageET = (EditText) findViewById(R.id.message_ET);
         timeTV = (TextView) findViewById(R.id.time_TV);
         dateTV = (TextView) findViewById(R.id.date_TV);
+        Button submitTV = (Button) findViewById(R.id.submit_TV);
 
         Calendar c = Calendar.getInstance();
 
@@ -62,6 +67,20 @@ public class EditorActivity extends AppCompatActivity {
             public void onClick(View view) {
                 DialogFragment newFragment = new DatePickerFragment();
                 newFragment.show(getFragmentManager(), "datePicker");
+            }
+        });
+
+
+        submitTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent resultIntent = new Intent();
+                
+                // TODO Add extras or a data URI to this intent as appropriate.
+                resultIntent.putExtra("some_key", "String data");
+                setResult(1, resultIntent);
+                finish();
+
             }
         });
     }

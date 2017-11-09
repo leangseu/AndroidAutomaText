@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,20 +29,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, EditorActivity.class);
-                startActivity(i);
+                startActivityForResult(i, 1);
             }
         });
 
         //attach the Adapter for the list of tasks
         ArrayList<Task> taskList = new ArrayList<Task>();
+        Task newTask = new Task("9999999", "hi", "12/12/18", "10:00pm");
         TaskAdapter taskListAdapter = new TaskAdapter(this, taskList);
         ListView taskListView = (ListView) findViewById(R.id.tasks_list);
         taskListView.setAdapter(taskListAdapter);
+        taskListAdapter.addAll(newTask);
+        Log.d("woo", String.valueOf(taskListAdapter.getCount()));
 
-        Task newTask = new Task("9999999", "hi", "12/12/18", "10:00pm");
-        taskListAdapter.add(newTask);
 
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("result", "onActivityResult: aaaa");
+        Log.d("return", "onActivityResult: " + data.getStringExtra("some_key"));
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

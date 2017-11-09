@@ -1,6 +1,7 @@
 package com.leangseu.automatext;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,24 +23,27 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         super(context, 0, tasks);
     }
 
-    public View getView(int position, View view, ViewGroup parentView) {
+    public View getView(int position, View convertView, ViewGroup parent) {
+        // Get the data item for this position
         Task task = getItem(position);
-        if (view == null) {
-            view = LayoutInflater.from(getContext()).inflate(R.layout.item_task, parentView, false);
+        // Check if an existing view is being reused, otherwise inflate the view
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_task, parent, false);
         }
+        TextView phoneNumberTV = (TextView) convertView.findViewById(R.id.phone_number_li);
+        TextView messageTV = (TextView) convertView.findViewById(R.id.message_li);
+        TextView dateTV = (TextView) convertView.findViewById(R.id.date_li);
+        TextView timeTV = (TextView) convertView.findViewById(R.id.time_li);
 
-        TextView phoneNumberTV = (TextView) view.findViewById(R.id.phone_number_li);
-        TextView messageTV = (TextView) view.findViewById(R.id.message_li);
-        TextView dateTV = (TextView) view.findViewById(R.id.date_li);
-        TextView timeTV = (TextView) view.findViewById(R.id.time_li);
-
+        Log.d("thing", "getView: aa");
         phoneNumberTV.setText(task.phoneNumber);
         messageTV.setText(task.message);
         dateTV.setText(task.date);
         timeTV.setText(task.time);
 
-        return view;
+        return convertView;
     }
+
 }
 
 
