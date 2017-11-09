@@ -4,54 +4,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.leangseu.automatext.EditorActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="25dp"
+    tools:context="com.leangseu.automatext.EditorActivity">
 
     <TextView
+        style="@style/EditorStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/to"
-        style="@style/EditorStyle"/>
+        android:text="@string/to" />
 
     <EditText
         android:id="@+id/phone_number_ET"
+        style="@style/EditorStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="phone"
-        style="@style/EditorStyle"/>
+        android:inputType="phone" />
 
     <TextView
+        style="@style/EditorStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/message"
-        style="@style/EditorStyle"/>
+        android:text="@string/message" />
 
     <EditText
         android:id="@+id/message_ET"
+        style="@style/EditorStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/EditorStyle"
         android:maxLines="3"
-        android:textAlignment="viewStart"/>
+        android:textAlignment="viewStart" />
 
     <TextView
-        android:text="@string/when"
+        style="@style/EditorStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/EditorStyle"/>
+        android:text="@string/when" />
 
     <TextView
         android:id="@+id/time_TV"
-        android:text="@string/time"
+        style="@style/EditorStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/EditorStyle"/>
+        android:text="@string/time" />
 
     <TextView
         android:id="@+id/date_TV"
-        android:text="@string/date"
+        style="@style/EditorStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/EditorStyle"/>
+        android:text="@string/date" />
 
 </LinearLayout>
