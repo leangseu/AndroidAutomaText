@@ -17,6 +17,9 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    ArrayList<Task> taskList;
+    TaskAdapter taskListAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,22 +37,21 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //attach the Adapter for the list of tasks
-        ArrayList<Task> taskList = new ArrayList<Task>();
+        taskList = new ArrayList<Task>();
         Task newTask = new Task("9999999", "hi", "12/12/18", "10:00pm");
-        TaskAdapter taskListAdapter = new TaskAdapter(this, taskList);
+        taskListAdapter = new TaskAdapter(this, taskList);
         ListView taskListView = (ListView) findViewById(R.id.tasks_list);
         taskListView.setAdapter(taskListAdapter);
         taskListAdapter.addAll(newTask);
-        Log.d("woo", String.valueOf(taskListAdapter.getCount()));
-
 
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("result", "onActivityResult: aaaa");
-        Log.d("return", "onActivityResult: " + data.getStringExtra("some_key"));
+        Log.d("return", "onActivityResult: " + data.getStringExtra("phone_number"));
+        Task task = new Task(data.getStringExtra("phone_number"), data.getStringExtra("message"), data.getStringExtra("date"), data.getStringExtra("time"));
+        taskListAdapter.add(task);
     };
 
     @Override

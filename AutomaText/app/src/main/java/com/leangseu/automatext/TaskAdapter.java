@@ -35,7 +35,6 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         TextView dateTV = (TextView) convertView.findViewById(R.id.date_li);
         TextView timeTV = (TextView) convertView.findViewById(R.id.time_li);
 
-        Log.d("thing", "getView: aa");
         phoneNumberTV.setText(task.phoneNumber);
         messageTV.setText(task.message);
         dateTV.setText(task.date);

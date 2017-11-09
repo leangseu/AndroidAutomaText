@@ -75,7 +75,15 @@ public class EditorActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent resultIntent = new Intent();
-                
+                EditText phoneNumberET = findViewById(R.id.phone_number_ET);
+                EditText messageET = findViewById(R.id.message_ET);
+                TextView timeTV = findViewById(R.id.time_TV);
+                TextView dateTV = findViewById(R.id.date_TV);
+
+                resultIntent.putExtra("phone_number", phoneNumberET.getText().toString());
+                resultIntent.putExtra("message", messageET.getText().toString());
+                resultIntent.putExtra("time", timeTV.getText().toString());
+                resultIntent.putExtra("date", dateTV.getText().toString());
                 // TODO Add extras or a data URI to this intent as appropriate.
                 resultIntent.putExtra("some_key", "String data");
                 setResult(1, resultIntent);
