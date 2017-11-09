@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.leangseu.automatext.EditorActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/to"
+        style="@style/EditorStyle"/>
+
+    <EditText
+        android:id="@+id/phone_number_ET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        style="@style/EditorStyle"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/message"
+        style="@style/EditorStyle"/>
+
+    <EditText
+        android:id="@+id/message_ET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/EditorStyle"
+        android:maxLines="3"
+        android:textAlignment="viewStart"/>
+
+    <TextView
+        android:text="@string/when"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/EditorStyle"/>
+
+    <TextView
+        android:id="@+id/time_TV"
+        android:text="@string/time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/EditorStyle"/>
+
+    <TextView
+        android:id="@+id/date_TV"
+        android:text="@string/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/EditorStyle"/>
+
+</LinearLayout>
