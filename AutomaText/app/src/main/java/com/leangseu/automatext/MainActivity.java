@@ -9,6 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +31,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        //attach the Adapter for the list of tasks
+        ArrayList<Task> taskList = new ArrayList<Task>();
+        TaskAdapter taskListAdapter = new TaskAdapter(this, taskList);
+        ListView taskListView = (ListView) findViewById(R.id.tasks_list);
+        taskListView.setAdapter(taskListAdapter);
+
+        Task newTask = new Task("9999999", "hi", "12/12/18", "10:00pm");
+        taskListAdapter.add(newTask);
+
     }
 
     @Override
