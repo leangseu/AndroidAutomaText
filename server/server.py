@@ -1,6 +1,6 @@
 import psycopg2
 from flask import Flask
-from flask import request
+from flask import request, Response
 #from dateutil import parser
 from datetime import datetime
 import calendar
@@ -22,26 +22,23 @@ except:
 def index():
     return "hello"
 
+# def form_or_json():
+#     data = request.get_json(silent=True)
+#     return data if data is not None else request.form
 
-@app.route('/saveText/', methods = ['POST'])
+
+@app.route('/saveText', methods = ['POST'])
 def saveText():
-    print "test", request.values
-    #phoneNumber = request.args.get('phoneNumber')
     phoneNumber = request.form['phoneNumber']
     message = request.form['message']
     date = request.form['date']
     time = request.form['time']
 
     roughDateTime = str(date + ' ' + time)
-    print "rough", roughDateTime
 
 
-    #dt = parser.parse(date + time)
     covertedDateTime = datetime.strptime(roughDateTime, '%j/%m/%y %I:%M%p')
     epochDateTime = calendar.timegm(covertedDateTime.timetuple())
-    print "covertedDateTime", covertedDateTime
-    print "epochDateTime", epochDateTime
-
 
     #message = request.args.get('message')
     #date = request.args.get('date')
@@ -52,22 +49,23 @@ def saveText():
     textArray.append(str(epochDateTime))
     saveTextoDb(textArray)
 
+    if saveTextoDb(textArray):
+        return Response("{'success':'true'}", status=200, mimetype='application/json')
+    else:
+        return Response("{'success':'false'}", status=500, mimetype='application/json')
+
     return "yes"
 
 
 def saveTextoDb(textArray):
-    for field in textArray:
-        print "field", field
     cur = conn.cursor()
-
-    print "0", textArray[0]
-    print "1", textArray[1]
-    print "2", textArray[2]
     try:
         cur.execute("INSERT INTO text_repo(to_number, text_body, time_to_send) VALUES (%s, %s, %s)", (textArray[0], textArray[1], textArray[2]))
         conn.commit()
+        return True
     except OSError as err:
         print "insert text failed :[", err
+        return False
     
     
 
