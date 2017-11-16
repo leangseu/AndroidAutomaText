@@ -14,6 +14,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -62,6 +68,23 @@ public class MainActivity extends AppCompatActivity {
             Log.d("return", "onActivityResult: " + data.getStringExtra("phone_number"));
             Task task = new Task(data.getStringExtra("phone_number"), data.getStringExtra("message"), data.getStringExtra("date"), data.getStringExtra("time"));
             taskListAdapter.add(task);
+
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url("http://publicobject.com/helloworld.txt")
+                    .build();
+            client.newCall(request).enqueue(new Callback() {
+
+                @Override
+                public void onFailure(Request request, IOException e) {
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onResponse(Response response) throws IOException {
+                    Log.d("http:", "onResponse: " + response.body().string());
+                }
+            });
         }
     }
 
