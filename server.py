@@ -1,7 +1,9 @@
 import psycopg2
 from flask import Flask
 from flask import request
-
+#from dateutil import parser
+from datetime import datetime
+import calendar
 
 #set FLASK_APP=server.py
 #python -m flask run
@@ -25,14 +27,43 @@ def saveText():
     message = request.form['message']
     date = request.form['date']
     time = request.form['time']
+
+    roughDateTime = str(date + ' ' + time)
+    print "rough", roughDateTime
+
+
+    #dt = parser.parse(date + time)
+    covertedDateTime = datetime.strptime(roughDateTime, '%j/%m/%y %I:%M%p')
+    epochDateTime = calendar.timegm(covertedDateTime.timetuple())
+    print "covertedDateTime", covertedDateTime
+    print "epochDateTime", epochDateTime
+
+
     #message = request.args.get('message')
     #date = request.args.get('date')
     #time = request.args.get('time')
-
-    print "phoneNumber", phoneNumber
-    print "message", message
-    print "date", date
-    print "time", time
+    textArray = [] 
+    textArray.append(str(phoneNumber))
+    textArray.append(str(message))
+    textArray.append(str(epochDateTime))
+    saveTextoDb(textArray)
 
     return "yes"
+
+
+def saveTextoDb(textArray):
+    for field in textArray:
+        print "field", field
+    cur = conn.cursor()
+
+    print "0", textArray[0]
+    print "1", textArray[1]
+    print "2", textArray[2]
+    try:
+        cur.execute("INSERT INTO text_repo(to_number, text_body, time_to_send) VALUES (%s, %s, %s)", (textArray[0], textArray[1], textArray[2]))
+        conn.commit()
+    except OSError as err:
+        print "insert text failed :[", err
+    
+    
 
