@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -38,21 +39,31 @@ public class MainActivity extends AppCompatActivity {
 
         //attach the Adapter for the list of tasks
         taskList = new ArrayList<Task>();
-        Task newTask = new Task("9999999", "hi", "12/12/18", "10:00pm");
+        Task newTask = new Task("9999999999", "hi", "12/12/18", "10:00pm");
         taskListAdapter = new TaskAdapter(this, taskList);
         ListView taskListView = (ListView) findViewById(R.id.tasks_list);
         taskListView.setAdapter(taskListAdapter);
         taskListAdapter.addAll(newTask);
+        taskListAdapter.add(new Task("9782341234", "long string for testing. duh duh duh", "12/12/18", "10:00pm"));
+
+        taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("On item click :", "position " + i  +" ID " + l);
+            }
+        });
 
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("return", "onActivityResult: " + data.getStringExtra("phone_number"));
-        Task task = new Task(data.getStringExtra("phone_number"), data.getStringExtra("message"), data.getStringExtra("date"), data.getStringExtra("time"));
-        taskListAdapter.add(task);
-    };
+        if (data != null) {
+            Log.d("return", "onActivityResult: " + data.getStringExtra("phone_number"));
+            Task task = new Task(data.getStringExtra("phone_number"), data.getStringExtra("message"), data.getStringExtra("date"), data.getStringExtra("time"));
+            taskListAdapter.add(task);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
