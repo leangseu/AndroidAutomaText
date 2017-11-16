@@ -37,8 +37,8 @@ public class TaskAdapter extends ArrayAdapter<Task> {
 
         phoneNumberTV.setText(task.phoneNumber);
         messageTV.setText(task.message);
-        dateTV.setText(task.date);
-        timeTV.setText(task.time);
+        //dateTV.setText(task.date);
+        timeTV.setText(task.time + "-" + task.date);
 
         return convertView;
     }
