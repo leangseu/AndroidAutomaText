@@ -25,8 +25,9 @@ public class EditorActivity extends AppCompatActivity {
 
     EditText numberET;
     EditText messageET;
-    TextView timeTV;
-    TextView dateTV;
+    Button timeBtn;
+    Button dateBtn;
+    Button submitBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +36,9 @@ public class EditorActivity extends AppCompatActivity {
 
         numberET = (EditText) findViewById(R.id.phone_number_ET);
         messageET = (EditText) findViewById(R.id.message_ET);
-        timeTV = (TextView) findViewById(R.id.time_TV);
-        dateTV = (TextView) findViewById(R.id.date_TV);
-        Button submitTV = (Button) findViewById(R.id.submit_TV);
+        timeBtn = (Button) findViewById(R.id.time_TV);
+        dateBtn = (Button) findViewById(R.id.date_TV);
+        submitBtn = (Button) findViewById(R.id.submit_TV);
 
         Calendar c = Calendar.getInstance();
 
@@ -50,7 +51,7 @@ public class EditorActivity extends AppCompatActivity {
         updateTime(hour, minute);
         updateDate(year, month, day);
 
-        timeTV.setOnClickListener(new View.OnClickListener() {
+        timeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogFragment newFragment = new TimePickerFragment();
@@ -62,7 +63,7 @@ public class EditorActivity extends AppCompatActivity {
             }
         });
 
-        dateTV.setOnClickListener(new View.OnClickListener() {
+        dateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogFragment newFragment = new DatePickerFragment();
@@ -71,7 +72,7 @@ public class EditorActivity extends AppCompatActivity {
         });
 
 
-        submitTV.setOnClickListener(new View.OnClickListener() {
+        submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent resultIntent = new Intent();
@@ -91,8 +92,9 @@ public class EditorActivity extends AppCompatActivity {
 
             }
         });
-    }
 
+
+    }
 
     @SuppressLint("ValidFragment")
     public class TimePickerFragment extends DialogFragment
@@ -170,7 +172,7 @@ public class EditorActivity extends AppCompatActivity {
             time += " AM";
         }
 
-        timeTV.setText(time);
+        timeBtn.setText(time);
     }
 
     public void updateDate(int year, int month, int day) {
@@ -191,6 +193,6 @@ public class EditorActivity extends AppCompatActivity {
         }
 
         date += "/" + year;
-        dateTV.setText(date);
+        dateBtn.setText(date);
     }
 }
