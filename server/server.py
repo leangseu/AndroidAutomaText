@@ -12,7 +12,6 @@ app = Flask(__name__)
 
 try:
     conn = psycopg2.connect("dbname='dcdphn5eus188v' user='rgkhdfsnkyghpp' host='ec2-184-72-255-211.compute-1.amazonaws.com' password='5026c8ab8996d52d7d4ce83b251ea77e3d3c63be9646eed1dad6bfdb4e65e59a'")
-    #conn = psycopg2.connect("dbname='swnsggul' user='swnsggul' host='baasu.db.elephantsql.com' password='-fMErUr5HCCr8gcwXQDrzMIzvJv7km_c'")
     if conn:
         print "yea boi"
 except:
@@ -21,10 +20,6 @@ except:
 @app.route('/', methods = ['get'])
 def index():
     return "hello"
-
-# def form_or_json():
-#     data = request.get_json(silent=True)
-#     return data if data is not None else request.form
 
 
 @app.route('/saveText', methods = ['POST'])
@@ -40,9 +35,6 @@ def saveText():
     covertedDateTime = datetime.strptime(roughDateTime, '%j/%m/%y %I:%M%p')
     epochDateTime = calendar.timegm(covertedDateTime.timetuple())
 
-    #message = request.args.get('message')
-    #date = request.args.get('date')
-    #time = request.args.get('time')
     textArray = [] 
     textArray.append(str(phoneNumber))
     textArray.append(str(message))
