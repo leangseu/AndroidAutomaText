@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="25dp"
+    tools:context="com.leangseu.automatext.EditorActivity">
+
+    <TextView
+        style="@style/EditorStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/to" />
+
+    <EditText
+        android:id="@+id/phone_number_ET"
+        style="@style/EditorStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        />
+
+    <TextView
+        style="@style/EditorStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/message" />
+
+    <EditText
+        android:id="@+id/message_ET"
+        style="@style/EditorStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="3"
+        android:textAlignment="viewStart" />
+
+    <TextView
+        style="@style/EditorStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/when" />
+
+    <Button
+        android:id="@+id/time_TV"
+        style="@style/EditorStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/time"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
+        android:background="@color/lightBlue"
+        android:padding="8dp"
+        android:layout_margin="5dp"/>
+
+    <Button
+        android:id="@+id/date_TV"
+        style="@style/EditorStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/date"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
+        android:background="@color/lightBlue"
+        android:padding="8dp"
+        android:layout_margin="5dp"
+        />
+
+    <Button
+        android:id="@+id/submit_TV"
+        android:text="@string/submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>
