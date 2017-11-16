@@ -9,7 +9,6 @@
     tools:context="com.leangseu.automatext.EditorActivity">
 
     <TextView
-        android:textStyle="bold"
         style="@style/EditorStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +23,6 @@
         />
 
     <TextView
-        android:textStyle="bold"
         style="@style/EditorStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,7 +37,6 @@
         android:textAlignment="viewStart" />
 
     <TextView
-        android:textStyle="bold"
         style="@style/EditorStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,45 +45,33 @@
     <Button
         android:id="@+id/time_TV"
         style="@style/EditorStyle"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/time"
         android:layout_gravity="center_horizontal"
         android:textStyle="bold"
-        android:textColor="@color/white"
-        android:background="@color/colorPrimary"
+        android:background="@color/lightBlue"
         android:padding="8dp"
         android:layout_margin="5dp"/>
 
     <Button
         android:id="@+id/date_TV"
         style="@style/EditorStyle"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/date"
         android:layout_gravity="center_horizontal"
         android:textStyle="bold"
-        android:textColor="@color/white"
-        android:background="@color/colorPrimary"
+        android:background="@color/lightBlue"
         android:padding="8dp"
         android:layout_margin="5dp"
         />
-    <RelativeLayout
-        android:padding="8dp"
-        android:id="@+id/relativeLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+
     <Button
-        android:textStyle="bold"
-        android:background="@color/colorAccentBubble"
-        android:textColor="@color/white"
         android:id="@+id/submit_TV"
         android:text="@string/submit"
-        android:textSize="15sp"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    </RelativeLayout>
 
 
 </LinearLayout>
