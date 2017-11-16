@@ -37,8 +37,8 @@ public class TaskAdapter extends ArrayAdapter<Task> {
 
         phoneNumberTV.setText(task.phoneNumber.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1)-$2-$3"));
         messageTV.setText(task.message);
-        dateTV.setText(task.date);
-        timeTV.setText(task.time);
+        //dateTV.setText(task.date);
+        timeTV.setText(task.time + "-" + task.date);
 
         messageTV.setHorizontallyScrolling(true);
         messageTV.setSelected(true);
