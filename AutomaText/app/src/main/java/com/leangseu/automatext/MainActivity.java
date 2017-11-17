@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                     .build();
 
             Request request = new Request.Builder()
-                    .url("http://localhost:5000/saveText")
+                    .url("https://text-me-later.herokuapp.com/saveText")
                     .post(requestBody)
                     .build();
 
