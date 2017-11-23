@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 import java.io.IOException;
@@ -51,18 +52,22 @@ public class MainActivity extends AppCompatActivity {
         taskList = new ArrayList<Task>();
         Task newTask = new Task("9999999999", "hi", "12/12/18", "10:00pm");
         taskListAdapter = new TaskAdapter(this, taskList);
-        ListView taskListView = (ListView) findViewById(R.id.tasks_list);
+        final ListView taskListView = (ListView) findViewById(R.id.tasks_list);
         taskListView.setAdapter(taskListAdapter);
         taskListAdapter.addAll(newTask);
         taskListAdapter.add(new Task("9782341234", "long string for testing. duh duh duh", "12/12/18", "10:00pm"));
 
-        taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        taskListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("On item click :", "position " + i  +" ID " + l);
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // Delete from list
+                Task item = taskListAdapter.getItem(i);
+                taskListAdapter.remove(item);
+                Toast.makeText(getApplicationContext(),"Deleted message to " + item.phoneNumber, Toast.LENGTH_SHORT).show();
+                //TODO delete from database
+                return true;
             }
         });
-
     }
 
     @Override
@@ -102,27 +107,5 @@ public class MainActivity extends AppCompatActivity {
 
             });
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }
