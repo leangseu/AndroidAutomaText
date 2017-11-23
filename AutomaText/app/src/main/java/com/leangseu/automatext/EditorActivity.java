@@ -167,9 +167,9 @@ public class EditorActivity extends AppCompatActivity {
         }
 
         if (pm) {
-            time += " PM";
+            time += "pm";
         } else {
-            time += " AM";
+            time += "am";
         }
 
         timeBtn.setText(time);
