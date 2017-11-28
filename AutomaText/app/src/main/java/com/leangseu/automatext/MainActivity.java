@@ -57,6 +57,19 @@ public class MainActivity extends AppCompatActivity {
         taskListAdapter.addAll(newTask);
         taskListAdapter.add(new Task("9782341234", "long string for testing. duh duh duh", "12/12/18", "10:00pm"));
 
+        taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+                Task item = taskListAdapter.getItem(i);
+                intent.putExtra("phone_number", item.phoneNumber);
+                intent.putExtra("message", item.message);
+                intent.putExtra("time", item.time);
+                intent.putExtra("date", item.date);
+                startActivity(intent);
+            }
+        });
+
         taskListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -97,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call call, IOException e) {
+                    Log.d("Error", e.toString());
                     e.printStackTrace();
                 }
 

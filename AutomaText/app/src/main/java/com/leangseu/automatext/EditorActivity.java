@@ -40,6 +40,14 @@ public class EditorActivity extends AppCompatActivity {
         dateBtn = (Button) findViewById(R.id.date_TV);
         submitBtn = (Button) findViewById(R.id.submit_TV);
 
+        Bundle extras = getIntent().getExtras();
+
+        if (extras != null) {
+            timeBtn.setText(extras.getString("time"));
+            dateBtn.setText(extras.getString("date"));
+            numberET.setText(extras.getString("phone_number"));
+            messageET.setText(extras.getString("message"));
+        }
         Calendar c = Calendar.getInstance();
 
         final int hour = c.get(Calendar.HOUR_OF_DAY);
@@ -50,6 +58,7 @@ public class EditorActivity extends AppCompatActivity {
 
         updateTime(hour, minute);
         updateDate(year, month, day);
+
 
         timeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +98,6 @@ public class EditorActivity extends AppCompatActivity {
                 resultIntent.putExtra("some_key", "String data");
                 setResult(1, resultIntent);
                 finish();
-
             }
         });
 
