@@ -20,15 +20,16 @@ auth_token = "26e7f55521e7f244fc80275c9d368b14"
 client = Client(account_sid, auth_token)
 
 cur = conn.cursor()
-cur.execute("""SELECT to_number, text_body, id FROM text_repo WHERE time_to_send >= %s""", [calendar.timegm(time.gmtime())])
+cur.execute("""SELECT to_number, text_body, id FROM text_repo WHERE time_to_send <= %s""", [calendar.timegm(time.gmtime())])
 phoneNums = cur.fetchall()
 
 for num in phoneNums:
-    print(num)
+    print("num", num)
     mynum = num[0]
     body = num[1]
     _id = num[2]
     mynum = 1+mynum.replace("-", "") if mynum[0] == '1' else mynum.replace("-", "")
+    print("mynum after", mynum)
     client.api.account.messages.create(
     to=mynum,
     from_="+18572147448",

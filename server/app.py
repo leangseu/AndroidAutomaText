@@ -5,7 +5,7 @@ from flask import request, Response
 from datetime import datetime
 import calendar
 
-#set FLASK_APP=server.py
+#set FLASK_APP=app.py
 #python -m flask run
 
 app = Flask(__name__)
@@ -39,22 +39,35 @@ def saveText():
     textArray.append(str(phoneNumber))
     textArray.append(str(message))
     textArray.append(str(epochDateTime))
-    saveTextoDb(textArray)
+    textID = saveTextoDb(textArray)
 
-    if saveTextoDb(textArray):
-        return Response("{'success':'true', 'textID': " + + "}", status=200, mimetype='application/json')
+    if textID:
+        return Response("{'success':'true', 'textID': " + str(textID) + "}", status=200, mimetype='application/json')
     else:
         return Response("{'success':'false'}", status=500, mimetype='application/json')
 
     return "yes"
 
+@app.route('/deleteText', methods = ['POST'])
+def deleteText():
+
+    cur = conn.cursor()
+    textID = request.form['textID']
+    try:
+        cur.execute("""DELETE FROM text_repo WHERE id = %s""", [textID])
+        conn.commit()
+        return Response("{'success':'true'}", status=200, mimetype='application/json')
+    except OSError as err:
+        print("delete text failed :[", err)
+        return False
+
 
 def saveTextoDb(textArray):
     cur = conn.cursor()
     try:
-        cur.execute("INSERT INTO text_repo(to_number, text_body, time_to_send) VALUES (%s, %s, %s)", (textArray[0], textArray[1], textArray[2]))
+        cur.execute("INSERT INTO text_repo(to_number, text_body, time_to_send) VALUES (%s, %s, %s) RETURNING id", (textArray[0], textArray[1], textArray[2]))
         conn.commit()
-        return cursor.fetchone()[0]
+        return cur.fetchone()[0]
     except OSError as err:
         print("insert text failed :[", err)
         return False
