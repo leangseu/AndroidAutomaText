@@ -5,8 +5,13 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
+import android.app.LoaderManager;
 import android.app.TimePickerDialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -17,17 +22,23 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.leangseu.automatext.data.AutomaTextContract.AutomaTextEntry;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class EditorActivity extends AppCompatActivity {
+public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     EditText numberET;
     EditText messageET;
     Button timeBtn;
     Button dateBtn;
     Button submitBtn;
+
+    private static final int EXISTING_LOADER = 0;
+    private Uri currentUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +50,18 @@ public class EditorActivity extends AppCompatActivity {
         timeBtn = (Button) findViewById(R.id.time_TV);
         dateBtn = (Button) findViewById(R.id.date_TV);
         submitBtn = (Button) findViewById(R.id.submit_TV);
+
+        currentUri = getIntent().getData();
+
+        if (currentUri == null) {
+            setTitle("New Text");
+
+            invalidateOptionsMenu();
+        } else {
+            setTitle("Edit Text");
+
+            getLoaderManager().initLoader(0, null, this);
+        }
 
         Bundle extras = getIntent().getExtras();
 
@@ -95,12 +118,51 @@ public class EditorActivity extends AppCompatActivity {
                 resultIntent.putExtra("time", timeTV.getText().toString());
                 resultIntent.putExtra("date", dateTV.getText().toString());
                 // TODO Add extras or a data URI to this intent as appropriate.
+                ContentValues values = new ContentValues();
+                values.put(AutomaTextEntry.COLUMN_NUMBER, phoneNumberET.getText().toString());
+                values.put(AutomaTextEntry.COLUMN_MESSAGE, messageET.getText().toString());
+                values.put(AutomaTextEntry.COLUMN_TIME, timeTV.getText().toString());
+                values.put(AutomaTextEntry.COLUMN_DATE, dateTV.getText().toString());
+
+                if (currentUri == null) {
+                    Uri newUri = getContentResolver().insert(AutomaTextEntry.CONTENT_URI, values);
+
+                    if (newUri == null) {
+                        Toast.makeText(this, "FAILED", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "SUCCESS", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    int rowsAffected = getContentResolver().update(currentUri, values, null, null);
+
+                    if (rowsAffected == 0) {
+                        Toast.makeText(this, "FAILED", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "SUCCESS", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
                 resultIntent.putExtra("some_key", "String data");
                 setResult(1, resultIntent);
                 finish();
             }
         });
 
+
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
 
     }
 

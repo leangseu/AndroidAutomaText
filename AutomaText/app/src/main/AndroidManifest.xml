@@ -31,6 +31,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".EditorActivity"></activity>
+        <provider
+            android:authorities="com.leangseu.automatext"
+            android:name=".data.AutomaTextProvider"></provider>
     </application>
 
 </manifest>
