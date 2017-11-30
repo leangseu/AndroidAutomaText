@@ -32,7 +32,7 @@ def saveText():
     roughDateTime = str(date + ' ' + time)
 
 
-    covertedDateTime = datetime.strptime(roughDateTime, '%m/%d/%Y %I:%M %p')
+    covertedDateTime = datetime.strptime(roughDateTime, '%m/%d/%Y %I:%M%p')
     epochDateTime = calendar.timegm(covertedDateTime.timetuple())
 
     textArray = [] 
@@ -42,7 +42,7 @@ def saveText():
     saveTextoDb(textArray)
 
     if saveTextoDb(textArray):
-        return Response("{'success':'true'}", status=200, mimetype='application/json')
+        return Response("{'success':'true', 'textID': " + + "}", status=200, mimetype='application/json')
     else:
         return Response("{'success':'false'}", status=500, mimetype='application/json')
 
@@ -54,7 +54,7 @@ def saveTextoDb(textArray):
     try:
         cur.execute("INSERT INTO text_repo(to_number, text_body, time_to_send) VALUES (%s, %s, %s)", (textArray[0], textArray[1], textArray[2]))
         conn.commit()
-        return True
+        return cursor.fetchone()[0]
     except OSError as err:
         print("insert text failed :[", err)
         return False
