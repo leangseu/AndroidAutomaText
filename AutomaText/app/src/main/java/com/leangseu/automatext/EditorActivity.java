@@ -8,6 +8,7 @@ import android.app.FragmentManager;
 import android.app.LoaderManager;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -55,8 +56,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         if (currentUri == null) {
             setTitle("New Text");
-
-            invalidateOptionsMenu();
         } else {
             setTitle("Edit Text");
 
@@ -128,17 +127,18 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                     Uri newUri = getContentResolver().insert(AutomaTextEntry.CONTENT_URI, values);
 
                     if (newUri == null) {
-                        Toast.makeText(this, "FAILED", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "FAILED", Toast.LENGTH_SHORT).show();
+
                     } else {
-                        Toast.makeText(this, "SUCCESS", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "SUCCESS", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     int rowsAffected = getContentResolver().update(currentUri, values, null, null);
 
                     if (rowsAffected == 0) {
-                        Toast.makeText(this, "FAILED", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "FAILED", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(this, "SUCCESS", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "SUCCESS", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -153,7 +153,19 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return null;
+        String[] projection = {
+                AutomaTextEntry._ID,
+                AutomaTextEntry.COLUMN_NUMBER,
+                AutomaTextEntry.COLUMN_MESSAGE,
+                AutomaTextEntry.COLUMN_TIME,
+                AutomaTextEntry.COLUMN_DATE,
+                AutomaTextEntry.COLUMN_FLAG};
+        return new CursorLoader(this,
+                currentUri,
+                projection,
+                null,
+                null,
+                null);
     }
 
     @Override
