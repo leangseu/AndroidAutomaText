@@ -119,8 +119,29 @@ public class AutomaTextProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        // Track the number of rows that were deleted
+        int rowsDeleted = 0;
+
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case AUTOMATEXT:
+                rowsDeleted = database.delete(AutomaTextEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case AUTOMATEXT_ID:
+                selection = AutomaTextEntry._ID + "=?";
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                rowsDeleted = database.delete(AutomaTextEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            default:
+                throw new IllegalArgumentException("Deletion is not supported for " + uri);
+        }
+        if (rowsDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return rowsDeleted;
     }
 
     @Override

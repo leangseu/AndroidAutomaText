@@ -8,4 +8,5 @@
     <string name="time">00:00 AM</string>
     <string name="date">00/00/0000</string>
     <string name="submit">Save Text</string>
+    <string name="delete">Delete Text</string>
 </resources>

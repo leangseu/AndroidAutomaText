@@ -37,6 +37,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     Button timeBtn;
     Button dateBtn;
     Button submitBtn;
+    Button deleteBtn;
 
     private static final int EXISTING_LOADER = 0;
     private Uri currentUri;
@@ -51,11 +52,22 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         timeBtn = (Button) findViewById(R.id.time_TV);
         dateBtn = (Button) findViewById(R.id.date_TV);
         submitBtn = (Button) findViewById(R.id.submit_TV);
+        deleteBtn = (Button) findViewById(R.id.delete_tv);
 
         currentUri = getIntent().getData();
 
         if (currentUri == null) {
             setTitle("New Text");
+            Calendar c = Calendar.getInstance();
+
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            updateTime(hour, minute);
+            updateDate(year, month, day);
         } else {
             setTitle("Edit Text");
 
@@ -129,7 +141,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
 
-
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getContentResolver().delete(currentUri, null, null);
+                finish();
+            }
+        });
     }
 
     @Override
@@ -154,6 +172,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if (cursor == null || cursor.getCount() < 1) {
             return;
         }
+
+        deleteBtn.setVisibility(View.VISIBLE);
 
         if (cursor.moveToFirst()) {
             int numberIndex = cursor.getColumnIndex(AutomaTextEntry.COLUMN_NUMBER);
