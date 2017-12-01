@@ -165,4 +165,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoaderReset(Loader<Cursor> loader) {
         taskListAdapter.swapCursor(null);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_delete_all:
+                getContentResolver().delete(AutomaTextEntry.CONTENT_URI, null, null);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
