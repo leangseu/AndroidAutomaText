@@ -62,33 +62,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             getLoaderManager().initLoader(0, null, this);
         }
 
-        Bundle extras = getIntent().getExtras();
-
-        if (extras != null) {
-            timeBtn.setText(extras.getString("time"));
-            dateBtn.setText(extras.getString("date"));
-            numberET.setText(extras.getString("phone_number"));
-            messageET.setText(extras.getString("message"));
-        }
-        Calendar c = Calendar.getInstance();
-
-        final int hour = c.get(Calendar.HOUR_OF_DAY);
-        final int minute = c.get(Calendar.MINUTE);
-        final int year = c.get(Calendar.YEAR);
-        final int month = c.get(Calendar.MONTH);
-        final int day = c.get(Calendar.DAY_OF_MONTH);
-
-        updateTime(hour, minute);
-        updateDate(year, month, day);
-
 
         timeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogFragment newFragment = new TimePickerFragment();
                 Bundle times = new Bundle();
-                times.putInt("hour", hour);
-                times.putInt("minute", minute);
+                times.putInt("hour", Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
+                times.putInt("minute", Calendar.getInstance().get(Calendar.MINUTE));
                 newFragment.setArguments(times);
                 newFragment.show(getFragmentManager(), "timePicker");
             }
@@ -170,12 +151,39 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if (cursor == null || cursor.getCount() < 1) {
+            return;
+        }
 
+        if (cursor.moveToFirst()) {
+            int numberIndex = cursor.getColumnIndex(AutomaTextEntry.COLUMN_NUMBER);
+            int messageIndex = cursor.getColumnIndex(AutomaTextEntry.COLUMN_MESSAGE);
+            int timeIndex = cursor.getColumnIndex(AutomaTextEntry.COLUMN_TIME);
+            int dateIndex = cursor.getColumnIndex(AutomaTextEntry.COLUMN_DATE);
+            int flagIndex = cursor.getColumnIndex(AutomaTextEntry.COLUMN_FLAG);
+
+            numberET.setText(cursor.getString(numberIndex));
+            messageET.setText(cursor.getString(messageIndex));
+            timeBtn.setText(cursor.getString(timeIndex));
+            dateBtn.setText(cursor.getString(dateIndex));
+        }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        numberET.setText("");
+        messageET.setText("");
 
+        Calendar c = Calendar.getInstance();
+
+        final int hour = c.get(Calendar.HOUR_OF_DAY);
+        final int minute = c.get(Calendar.MINUTE);
+        final int year = c.get(Calendar.YEAR);
+        final int month = c.get(Calendar.MONTH);
+        final int day = c.get(Calendar.DAY_OF_MONTH);
+
+        updateTime(hour, minute);
+        updateDate(year, month, day);
     }
 
     @SuppressLint("ValidFragment")
