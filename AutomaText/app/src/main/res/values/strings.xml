@@ -10,4 +10,5 @@
     <string name="submit">Save Text</string>
     <string name="delete">Delete Text</string>
     <string name="delete_all">Delete All</string>
+    <string name="edit">Edit</string>
 </resources>

@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -34,6 +35,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import com.leangseu.automatext.data.AutomaTextContract.AutomaTextEntry;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -180,6 +183,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             case R.id.action_delete_all:
                 getContentResolver().delete(AutomaTextEntry.CONTENT_URI, null, null);
                 return true;
+//            case R.id.action_edit:
+//                return true;
         }
 
         return super.onOptionsItemSelected(item);

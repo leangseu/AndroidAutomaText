@@ -145,7 +145,27 @@ public class AutomaTextProvider extends ContentProvider {
     }
 
     @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String selection, @Nullable String[] selectionArgs) {
+        final int match = sUriMatcher.match(uri);
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        int rowsUpdated = 0;
+        switch (match) {
+            case AUTOMATEXT:
+                rowsUpdated = database.update(AutomaTextEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+                break;
+            case AUTOMATEXT_ID:
+                selection = AutomaTextEntry._ID + "=?";
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                rowsUpdated = database.update(AutomaTextEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+                break;
+            default:
+                throw new IllegalArgumentException("Update is not supported for " + uri);
+        }
+
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return rowsUpdated;
     }
 }

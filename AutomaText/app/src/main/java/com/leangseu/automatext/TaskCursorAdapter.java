@@ -34,7 +34,6 @@ public class TaskCursorAdapter extends CursorAdapter {
         TextView dateTV = (TextView) view.findViewById(R.id.date_li);
         TextView timeTV = (TextView) view.findViewById(R.id.time_li);
 
-
         int numberIndex = cursor.getColumnIndex(AutomaTextEntry.COLUMN_NUMBER);
         int messageIndex = cursor.getColumnIndex(AutomaTextEntry.COLUMN_MESSAGE);
         int timeIndex = cursor.getColumnIndex(AutomaTextEntry.COLUMN_TIME);
@@ -54,6 +53,5 @@ public class TaskCursorAdapter extends CursorAdapter {
         dateTV.setText(date);
         timeTV.setText(time);
 
-//        context.getContentResolver().update(uri, null, null, null);
     }
 }
