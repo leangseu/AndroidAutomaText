@@ -92,7 +92,7 @@
             android:textStyle="bold"
             android:background="@color/colorAccentBubble"
             android:textColor="@color/white"
-            android:visibility="invisible"
+            android:visibility="gone"
             android:id="@+id/delete_tv"
             android:text="@string/delete"
             android:textSize="15sp"

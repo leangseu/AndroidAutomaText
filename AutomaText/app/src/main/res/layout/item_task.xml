@@ -3,7 +3,9 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:theme="@style/TaskListStyle">
+        android:theme="@style/TaskListStyle"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp">
         <TextView
             android:id="@+id/phone_number_li"
             android:padding="5dp"
@@ -27,7 +29,7 @@
             android:padding="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_toLeftOf="@id/sync_indicator"
             android:layout_alignParentTop="true"/>
         <TextView
             android:id="@+id/date_li"
@@ -35,5 +37,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/time_li"
-            android:layout_alignParentRight="true"/>
+            android:layout_toLeftOf="@id/sync_indicator"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sync_indicator"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            />
     </RelativeLayout>

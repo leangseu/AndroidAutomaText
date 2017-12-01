@@ -91,10 +91,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 //            @Override
 //            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 //                // Delete from list
-//                Task item = taskListAdapter.getItem(i);
-//                taskListAdapter.remove(item);
-//                Toast.makeText(getApplicationContext(),"Deleted message to " + item.phoneNumber, Toast.LENGTH_SHORT).show();
+////                Task item = taskListAdapter.getItem(i);
+////                taskListAdapter.remove(item);
 //                //TODO delete from database
+//
+//                Toast.makeText(getApplicationContext(),"Deleted message", Toast.LENGTH_SHORT).show();
 //                return true;
 //            }
 //        });

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leangseu.automatext.data.AutomaTextContract.AutomaTextEntry;
@@ -33,25 +34,31 @@ public class TaskCursorAdapter extends CursorAdapter {
         TextView messageTV = (TextView) view.findViewById(R.id.message_li);
         TextView dateTV = (TextView) view.findViewById(R.id.date_li);
         TextView timeTV = (TextView) view.findViewById(R.id.time_li);
+        ImageView syncIndicatior = (ImageView) view.findViewById(R.id.sync_indicator);
 
         int numberIndex = cursor.getColumnIndex(AutomaTextEntry.COLUMN_NUMBER);
         int messageIndex = cursor.getColumnIndex(AutomaTextEntry.COLUMN_MESSAGE);
         int timeIndex = cursor.getColumnIndex(AutomaTextEntry.COLUMN_TIME);
         int dateIndex = cursor.getColumnIndex(AutomaTextEntry.COLUMN_DATE);
         int flagIndex = cursor.getColumnIndex(AutomaTextEntry.COLUMN_FLAG);
-        long id = cursor.getLong(cursor.getColumnIndex(AutomaTextEntry._ID));
-
-        Uri uri = ContentUris.withAppendedId(AutomaTextEntry.CONTENT_URI, id);
 
         String number = cursor.getString(numberIndex);
         String message = cursor.getString(messageIndex);
         String time = cursor.getString(timeIndex);
         String date = cursor.getString(dateIndex);
+        int flag = cursor.getInt(flagIndex);
 
         phoneNumberTV.setText(number);
         messageTV.setText(message);
         dateTV.setText(date);
         timeTV.setText(time);
+
+        if (flag != 0) {
+            syncIndicatior.setImageResource(R.drawable.success_indicator);
+        }
+        else {
+            syncIndicatior.setImageResource(R.drawable.failed_indicator);
+        }
 
     }
 }
