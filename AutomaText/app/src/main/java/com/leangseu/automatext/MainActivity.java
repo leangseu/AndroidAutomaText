@@ -40,8 +40,6 @@ import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-//    ArrayList<Task> taskList;
-//    TaskAdapter taskListAdapter;
     TaskCursorAdapter taskListAdapter;
 
     @Override
@@ -59,15 +57,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 startActivityForResult(i, 1);
             }
         });
-
-        //attach the Adapter for the list of tasks
-//        taskList = new ArrayList<Task>();
-//        Task newTask = new Task("9999999999", "hi", "12/12/18", "10:00pm");
-//        taskListAdapter = new TaskAdapter(this, taskList);
-//        final ListView taskListView = (ListView) findViewById(R.id.tasks_list);
-//        taskListView.setAdapter(taskListAdapter);
-//        taskListAdapter.addAll(newTask);
-//        taskListAdapter.add(new Task("9782341234", "long string for testing. duh duh duh", "12/12/18", "10:00pm"));
 
         ListView taskListView = (ListView) findViewById(R.id.tasks_list);
 
