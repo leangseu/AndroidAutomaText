@@ -1,7 +1,12 @@
-from crontab import CronTab
- 
-my_cron = CronTab(user='jam')
-job = my_cron.new(command='python check.py')
-job.minute.every(1)
- 
-my_cron.write()
+import schedule
+import time
+import os
+dir_path = os.path.dirname(os.path.realpath(__file__))
+def job():
+    os.system('python3 '+dir_path+'/check.py')
+
+schedule.every(1).minutes.do(job)
+
+while 1:
+    schedule.run_pending()
+    time.sleep(1)

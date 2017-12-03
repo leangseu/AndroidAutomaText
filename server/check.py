@@ -28,11 +28,11 @@ for num in phoneNums:
     mynum = num[0]
     body = num[1]
     _id = num[2]
-    mynum = 1+mynum.replace("-", "") if mynum[0] == '1' else mynum.replace("-", "")
-    print("mynum after", mynum)
+    mynum = "+1"+mynum.replace("-", "") if mynum[0] != '1' else "+"+mynum.replace("-", "")
     client.api.account.messages.create(
     to=mynum,
     from_="+18572147448",
     body=body)
-    cur.execute("""DELETE FROM text_repo WHERE id = %s""", [_id])
-    conn.commit()
+    # cur.execute("""DELETE FROM text_repo WHERE id = %s""", [_id])
+    # conn.commit()
+    
