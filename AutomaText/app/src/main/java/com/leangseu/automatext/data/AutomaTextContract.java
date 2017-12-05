@@ -29,6 +29,7 @@ public class AutomaTextContract {
 
         public final static String _ID = BaseColumns._ID;
 
+        public final static String ONLINE_ID = "online_id";
         public final static String COLUMN_NUMBER = "number";
         public final static String COLUMN_MESSAGE = "message";
         public final static String COLUMN_TIME = "time";
