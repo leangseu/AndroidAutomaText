@@ -50,7 +50,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     private static final int EXISTING_LOADER = 0;
     private Uri currentUri;
-    private boolean sync;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,30 +125,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 values.put(AutomaTextEntry.COLUMN_TIME, timeTV.getText().toString());
                 values.put(AutomaTextEntry.COLUMN_DATE, dateTV.getText().toString());
 
-                if (updateDatabase(values)) {
-                    Toast.makeText(getApplicationContext(), "SUCCESS SYNC", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "FAILED SYNC", Toast.LENGTH_SHORT).show();
-                }
-
-//                if (currentUri == null) {
-//                    Uri newUri = getContentResolver().insert(AutomaTextEntry.CONTENT_URI, values);
-//
-//                    if (newUri == null) {
-//                        Toast.makeText(getApplicationContext(), "FAILED", Toast.LENGTH_SHORT).show();
-//
-//                    } else {
-//                        Toast.makeText(getApplicationContext(), "SUCCESS", Toast.LENGTH_SHORT).show();
-//                    }
-//                } else {
-//                    int rowsAffected = getContentResolver().update(currentUri, values, null, null);
-//
-//                    if (rowsAffected == 0) {
-//                        Toast.makeText(getApplicationContext(), "FAILED", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(getApplicationContext(), "SUCCESS", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
+                updateDatabase(values);
 
 //                resultIntent.putExtra("some_key", "String data");
 //                setResult(1, resultIntent);
@@ -174,7 +150,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 AutomaTextEntry.COLUMN_MESSAGE,
                 AutomaTextEntry.COLUMN_TIME,
                 AutomaTextEntry.COLUMN_DATE,
-                AutomaTextEntry.COLUMN_FLAG};
+                AutomaTextEntry.COLUMN_FLAG,
+                AutomaTextEntry.ONLINE_ID};
         return new CursorLoader(this,
                 currentUri,
                 projection,
@@ -322,8 +299,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         dateBtn.setText(date);
     }
 
-    public boolean updateDatabase(final ContentValues values) {
-        sync = false;
+    public void updateDatabase(final ContentValues values) {
         OkHttpClient client = new OkHttpClient();
 
         RequestBody requestBody = new FormBody.Builder()
@@ -333,7 +309,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 .add("date", values.getAsString(AutomaTextEntry.COLUMN_DATE))
                 .build();
 
-        Request request = new Request.Builder()
+        final Request request = new Request.Builder()
                 .url("https://text-me-later.herokuapp.com/saveText")
                 .post(requestBody)
                 .build();
@@ -348,32 +324,28 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.d("http:", "onResponse: " + response.body().string());
+                String res = response.body().string();
+                Log.d("http:", "onResponse: ID" + res.substring(29, res.length()-1));
                 values.put(AutomaTextEntry.COLUMN_FLAG, 1);
-                sync = true;
+                values.put(AutomaTextEntry.ONLINE_ID, Integer.parseInt(res.substring(29, res.length()-1)));
                 if (currentUri == null) {
                     Uri newUri = getContentResolver().insert(AutomaTextEntry.CONTENT_URI, values);
                     if (newUri == null) {
-//                            Toast.makeText(getBaseContext(), "FAILED", Toast.LENGTH_SHORT).show();
                         Log.d("Insert ", "failed");
                     } else {
-//                            Toast.makeText(getBaseContext(), "SUCCESS", Toast.LENGTH_SHORT).show();
                         Log.d("Insert ", "success");
                     }
                 } else {
                     int rowsAffected = getContentResolver().update(currentUri, values, null, null);
 
                     if (rowsAffected == 0) {
-//                            Toast.makeText(getBaseContext(), "FAILED", Toast.LENGTH_SHORT).show();
                         Log.d("update ", "failed");
                     } else {
-//                            Toast.makeText(getBaseContext(), "SUCCESS", Toast.LENGTH_SHORT).show();
                         Log.d("update ", "success");
                     }
                 }
                 Log.d("success", values.getAsString(AutomaTextEntry.COLUMN_FLAG));
             }
         });
-        return sync;
     }
 }

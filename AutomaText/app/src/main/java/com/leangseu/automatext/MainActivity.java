@@ -107,7 +107,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 AutomaTextEntry.COLUMN_MESSAGE,
                 AutomaTextEntry.COLUMN_TIME,
                 AutomaTextEntry.COLUMN_DATE,
-                AutomaTextEntry.COLUMN_FLAG};
+                AutomaTextEntry.COLUMN_FLAG,
+                AutomaTextEntry.ONLINE_ID};
         return new CursorLoader(this,
                 AutomaTextEntry.CONTENT_URI,
                 projection,

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leangseu.automatext.data.AutomaTextContract.AutomaTextEntry;
 
@@ -55,9 +56,11 @@ public class TaskCursorAdapter extends CursorAdapter {
 
         if (flag != 0) {
             syncIndicatior.setImageResource(R.drawable.success_indicator);
+            Toast.makeText(context, "SUCCESS SYNC", Toast.LENGTH_SHORT).show();
         }
         else {
             syncIndicatior.setImageResource(R.drawable.failed_indicator);
+            Toast.makeText(context, "FAILED SYNC", Toast.LENGTH_SHORT).show();
         }
     }
 }

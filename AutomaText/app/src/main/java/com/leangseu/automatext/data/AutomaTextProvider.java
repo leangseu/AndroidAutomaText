@@ -100,7 +100,7 @@ public class AutomaTextProvider extends ContentProvider {
         String time = values.getAsString(AutomaTextEntry.COLUMN_TIME);
         String date = values.getAsString(AutomaTextEntry.COLUMN_DATE);
         String flag = values.getAsString(AutomaTextEntry.COLUMN_FLAG);
-
+        String onlineID = values.getAsString(AutomaTextEntry.ONLINE_ID);
 
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
