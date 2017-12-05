@@ -148,7 +148,7 @@ public class AutomaTextProvider extends ContentProvider {
     public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String selection, @Nullable String[] selectionArgs) {
         final int match = sUriMatcher.match(uri);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
-        int rowsUpdated = 0;
+        int rowsUpdated;
         switch (match) {
             case AUTOMATEXT:
                 rowsUpdated = database.update(AutomaTextEntry.TABLE_NAME, contentValues, selection, selectionArgs);
