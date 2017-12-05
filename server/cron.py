@@ -3,9 +3,9 @@ import time
 import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 def job():
-    os.system('python3 '+dir_path+'/check.py')
+    os.system('py '+dir_path+'/check.py')
 
-schedule.every(1).minutes.do(job)
+schedule.every(5).seconds.do(job)
 
 while 1:
     schedule.run_pending()
