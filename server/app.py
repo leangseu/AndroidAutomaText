@@ -59,7 +59,7 @@ def deleteText():
         return Response("{'success':'true'}", status=200, mimetype='application/json')
     except OSError as err:
         print("delete text failed :[", err)
-        return False
+        return Response("{'success':'false'}", status=500, mimetype='application/json')
 
 
 def saveTextoDb(textArray):
