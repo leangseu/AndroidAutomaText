@@ -24,15 +24,19 @@ cur.execute("""SELECT to_number, text_body, id FROM text_repo WHERE time_to_send
 phoneNums = cur.fetchall()
 
 for num in phoneNums:
-    print("num", num)
-    mynum = num[0]
-    body = num[1]
-    _id = num[2]
-    mynum = "+1"+mynum.replace("-", "") if mynum[0] != '1' else "+"+mynum.replace("-", "")
-    client.api.account.messages.create(
-    to=mynum,
-    from_="+18572147448",
-    body=body)
-    # cur.execute("""DELETE FROM text_repo WHERE id = %s""", [_id])
-    # conn.commit()
+    try:
+        print("num", num)
+        mynum = num[0]
+        body = num[1]
+        _id = num[2]
+        mynum = "+1"+mynum.replace("-", "") if mynum[0] != '1' else "+"+mynum.replace("-", "")
+        client.api.account.messages.create(
+        to=mynum,
+        from_="+18572147448",
+        body=body)
+        cur.execute("""DELETE FROM text_repo WHERE id = %s""", [_id])
+        conn.commit()
+    except Exception as e:
+        print("Error occured:" , e)
+        continue
     
