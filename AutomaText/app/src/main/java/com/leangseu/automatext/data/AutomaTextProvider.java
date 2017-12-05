@@ -123,20 +123,53 @@ public class AutomaTextProvider extends ContentProvider {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         // Track the number of rows that were deleted
         int rowsDeleted = 0;
+        Cursor cursor;
 
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case AUTOMATEXT:
+                cursor = database.rawQuery("SELECT " + AutomaTextEntry.ONLINE_ID + " FROM " +
+                        AutomaTextEntry.TABLE_NAME, null);
+                int [] onlineIDArray;
+//                if (cursor.moveToFirst()) {
+//                    String[] columnNames = cursor.getColumnNames();
+//                    onlineIDArray = new int[columnNames.length];
+//                    for (int i = 0; i < cursor.getCount(); i++) {
+//                        onlineIDArray[i] = cursor.getInt(0);
+//                        cursor.moveToNext();
+//                    }
+//                    Log.d("database delete all ", "online array id " + onlineIDArray.toString() );
+//                    // TODO: delete text with array id
+//                }
+                if (cursor.moveToFirst()) {
+                    int size = cursor.getCount();
+                    onlineIDArray = new int[size];
+                    for (int i = 0; i < size; i++) {
+                        onlineIDArray[i] = cursor.getInt(0);
+                        Log.d("database delete all ", "online array id " + cursor.getInt(0));
+                    }
+                }
+
                 rowsDeleted = database.delete(AutomaTextEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case AUTOMATEXT_ID:
+                long id = ContentUris.parseId(uri);
+                cursor = database.rawQuery("SELECT " + AutomaTextEntry.ONLINE_ID + " FROM " +
+                        AutomaTextEntry.TABLE_NAME + " WHERE _id = " + id, null);
+                if (cursor.moveToFirst()) {
+                    int onlineId = cursor.getInt(0);
+                    Log.d("database delete", "online id " + onlineId);
+                    // TODO: Delete with online id
+                    cursor.close();
+                }
                 selection = AutomaTextEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                selectionArgs = new String[] { String.valueOf(id) };
                 rowsDeleted = database.delete(AutomaTextEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new IllegalArgumentException("Deletion is not supported for " + uri);
         }
+
         if (rowsDeleted != 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }

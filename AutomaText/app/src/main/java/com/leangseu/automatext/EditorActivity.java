@@ -314,6 +314,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 .post(requestBody)
                 .build();
 
+//        updateLocalDatabase(values);
+
         client.newCall(request).enqueue(new Callback() {
 
             @Override
@@ -328,24 +330,28 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 Log.d("http:", "onResponse: ID" + res.substring(29, res.length()-1));
                 values.put(AutomaTextEntry.COLUMN_FLAG, 1);
                 values.put(AutomaTextEntry.ONLINE_ID, Integer.parseInt(res.substring(29, res.length()-1)));
-                if (currentUri == null) {
-                    Uri newUri = getContentResolver().insert(AutomaTextEntry.CONTENT_URI, values);
-                    if (newUri == null) {
-                        Log.d("Insert ", "failed");
-                    } else {
-                        Log.d("Insert ", "success");
-                    }
-                } else {
-                    int rowsAffected = getContentResolver().update(currentUri, values, null, null);
-
-                    if (rowsAffected == 0) {
-                        Log.d("update ", "failed");
-                    } else {
-                        Log.d("update ", "success");
-                    }
-                }
+                updateLocalDatabase(values);
                 Log.d("success", values.getAsString(AutomaTextEntry.COLUMN_FLAG));
             }
         });
+    }
+
+    public void updateLocalDatabase(ContentValues values) {
+        if (currentUri == null) {
+            Uri newUri = getContentResolver().insert(AutomaTextEntry.CONTENT_URI, values);
+            if (newUri == null) {
+                Log.d("Insert ", "failed");
+            } else {
+                Log.d("Insert ", "success");
+            }
+        } else {
+            int rowsAffected = getContentResolver().update(currentUri, values, null, null);
+
+            if (rowsAffected == 0) {
+                Log.d("update ", "failed");
+            } else {
+                Log.d("update ", "success");
+            }
+        }
     }
 }

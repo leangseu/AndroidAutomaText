@@ -27,7 +27,7 @@ public class AutomaTextDBHelper extends SQLiteOpenHelper {
                 + AutomaTextEntry.COLUMN_TIME + " TEXT NOT NULL, "
                 + AutomaTextEntry.COLUMN_DATE + " TEXT NOT NULL, "
                 + AutomaTextEntry.COLUMN_FLAG + " INTEGER DEFAULT 0,"
-                + AutomaTextEntry.ONLINE_ID + " INTEGER OPTIONAL);";
+                + AutomaTextEntry.ONLINE_ID + " INTEGER DEFAULT 0);";
 
         // Execute the SQL statement
         sqLiteDatabase.execSQL(SQL_CREATE_TABLE);
