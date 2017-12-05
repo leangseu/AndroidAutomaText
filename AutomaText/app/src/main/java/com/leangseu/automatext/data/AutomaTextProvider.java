@@ -131,21 +131,12 @@ public class AutomaTextProvider extends ContentProvider {
                 cursor = database.rawQuery("SELECT " + AutomaTextEntry.ONLINE_ID + " FROM " +
                         AutomaTextEntry.TABLE_NAME, null);
                 int [] onlineIDArray;
-//                if (cursor.moveToFirst()) {
-//                    String[] columnNames = cursor.getColumnNames();
-//                    onlineIDArray = new int[columnNames.length];
-//                    for (int i = 0; i < cursor.getCount(); i++) {
-//                        onlineIDArray[i] = cursor.getInt(0);
-//                        cursor.moveToNext();
-//                    }
-//                    Log.d("database delete all ", "online array id " + onlineIDArray.toString() );
-//                    // TODO: delete text with array id
-//                }
                 if (cursor.moveToFirst()) {
                     int size = cursor.getCount();
                     onlineIDArray = new int[size];
                     for (int i = 0; i < size; i++) {
                         onlineIDArray[i] = cursor.getInt(0);
+                        // TODO: delete text with array id
                         Log.d("database delete all ", "online array id " + cursor.getInt(0));
                     }
                 }
