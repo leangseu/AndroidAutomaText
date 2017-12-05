@@ -59,6 +59,5 @@ public class TaskCursorAdapter extends CursorAdapter {
         else {
             syncIndicatior.setImageResource(R.drawable.failed_indicator);
         }
-
     }
 }

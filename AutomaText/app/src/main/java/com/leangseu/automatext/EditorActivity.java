@@ -27,8 +27,17 @@ import android.widget.Toast;
 
 import com.leangseu.automatext.data.AutomaTextContract.AutomaTextEntry;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -41,6 +50,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     private static final int EXISTING_LOADER = 0;
     private Uri currentUri;
+    private boolean sync;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,27 +126,33 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 values.put(AutomaTextEntry.COLUMN_TIME, timeTV.getText().toString());
                 values.put(AutomaTextEntry.COLUMN_DATE, dateTV.getText().toString());
 
-                if (currentUri == null) {
-                    Uri newUri = getContentResolver().insert(AutomaTextEntry.CONTENT_URI, values);
-
-                    if (newUri == null) {
-                        Toast.makeText(getApplicationContext(), "FAILED", Toast.LENGTH_SHORT).show();
-
-                    } else {
-                        Toast.makeText(getApplicationContext(), "SUCCESS", Toast.LENGTH_SHORT).show();
-                    }
+                if (updateDatabase(values)) {
+                    Toast.makeText(getApplicationContext(), "SUCCESS SYNC", Toast.LENGTH_SHORT).show();
                 } else {
-                    int rowsAffected = getContentResolver().update(currentUri, values, null, null);
-
-                    if (rowsAffected == 0) {
-                        Toast.makeText(getApplicationContext(), "FAILED", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "SUCCESS", Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(getApplicationContext(), "FAILED SYNC", Toast.LENGTH_SHORT).show();
                 }
 
-                resultIntent.putExtra("some_key", "String data");
-                setResult(1, resultIntent);
+//                if (currentUri == null) {
+//                    Uri newUri = getContentResolver().insert(AutomaTextEntry.CONTENT_URI, values);
+//
+//                    if (newUri == null) {
+//                        Toast.makeText(getApplicationContext(), "FAILED", Toast.LENGTH_SHORT).show();
+//
+//                    } else {
+//                        Toast.makeText(getApplicationContext(), "SUCCESS", Toast.LENGTH_SHORT).show();
+//                    }
+//                } else {
+//                    int rowsAffected = getContentResolver().update(currentUri, values, null, null);
+//
+//                    if (rowsAffected == 0) {
+//                        Toast.makeText(getApplicationContext(), "FAILED", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(getApplicationContext(), "SUCCESS", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+
+//                resultIntent.putExtra("some_key", "String data");
+//                setResult(1, resultIntent);
                 finish();
             }
         });
@@ -304,5 +320,60 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         date += "/" + year;
         dateBtn.setText(date);
+    }
+
+    public boolean updateDatabase(final ContentValues values) {
+        sync = false;
+        OkHttpClient client = new OkHttpClient();
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("phoneNumber", values.getAsString(AutomaTextEntry.COLUMN_NUMBER))
+                .add("message", values.getAsString(AutomaTextEntry.COLUMN_MESSAGE))
+                .add("time", values.getAsString(AutomaTextEntry.COLUMN_TIME))
+                .add("date", values.getAsString(AutomaTextEntry.COLUMN_DATE))
+                .build();
+
+        Request request = new Request.Builder()
+                .url("https://text-me-later.herokuapp.com/saveText")
+                .post(requestBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("Error", e.toString());
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.d("http:", "onResponse: " + response.body().string());
+                values.put(AutomaTextEntry.COLUMN_FLAG, 1);
+                sync = true;
+                if (currentUri == null) {
+                    Uri newUri = getContentResolver().insert(AutomaTextEntry.CONTENT_URI, values);
+                    if (newUri == null) {
+//                            Toast.makeText(getBaseContext(), "FAILED", Toast.LENGTH_SHORT).show();
+                        Log.d("Insert ", "failed");
+                    } else {
+//                            Toast.makeText(getBaseContext(), "SUCCESS", Toast.LENGTH_SHORT).show();
+                        Log.d("Insert ", "success");
+                    }
+                } else {
+                    int rowsAffected = getContentResolver().update(currentUri, values, null, null);
+
+                    if (rowsAffected == 0) {
+//                            Toast.makeText(getBaseContext(), "FAILED", Toast.LENGTH_SHORT).show();
+                        Log.d("update ", "failed");
+                    } else {
+//                            Toast.makeText(getBaseContext(), "SUCCESS", Toast.LENGTH_SHORT).show();
+                        Log.d("update ", "success");
+                    }
+                }
+                Log.d("success", values.getAsString(AutomaTextEntry.COLUMN_FLAG));
+            }
+        });
+        return sync;
     }
 }

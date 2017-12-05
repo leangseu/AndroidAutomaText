@@ -3,6 +3,7 @@ package com.leangseu.automatext;
 
 import android.app.LoaderManager;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -93,43 +94,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null) {
-            Log.d("return", "onActivityResult: " + data.getStringExtra("phone_number"));
-            Task task = new Task(data.getStringExtra("phone_number"), data.getStringExtra("message"), data.getStringExtra("date"), data.getStringExtra("time"));
-//            taskListAdapter.add(task);
 
-            OkHttpClient client = new OkHttpClient();
-
-            RequestBody requestBody = new FormBody.Builder()
-                    .add("phoneNumber", task.phoneNumber)
-                    .add("message", task.message)
-                    .add("time", task.time)
-                    .add("date", task.date)
-                    .build();
-
-            Request request = new Request.Builder()
-                    .url("https://text-me-later.herokuapp.com/saveText")
-                    .post(requestBody)
-                    .build();
-
-
-            client.newCall(request).enqueue(new Callback() {
-
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    Log.d("Error", e.toString());
-                    e.printStackTrace();
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    Log.d("http:", "onResponse: " + response.body().string());
-                }
-
-            });
-        }
     }
 
     @Override
