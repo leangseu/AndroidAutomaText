@@ -4,6 +4,7 @@ from flask import request, Response
 #from dateutil import parser
 from datetime import datetime
 import calendar
+import json
 
 #set FLASK_APP=app.py
 #python -m flask run
@@ -35,6 +36,8 @@ def saveText():
     covertedDateTime = datetime.strptime(roughDateTime, '%m/%d/%Y %I:%M%p')
     epochDateTime = calendar.timegm(covertedDateTime.timetuple())
 
+    epochDateTime = epochDateTime + 18000
+
     textArray = [] 
     textArray.append(str(phoneNumber))
     textArray.append(str(message))
@@ -60,6 +63,16 @@ def deleteText():
     except OSError as err:
         print("delete text failed :[", err)
         return Response("{'success':'false'}", status=500, mimetype='application/json')
+
+@app.route('/massDelete', methods = ['POST'])
+def massDelete():
+    textIDs = request.form['textIDs']
+    
+    textIDS = textIDsplit()
+    for textID in textIDs:
+        print("textID", textID)
+
+
 
 
 def saveTextoDb(textArray):
