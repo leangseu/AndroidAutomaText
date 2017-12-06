@@ -8,6 +8,7 @@ import android.app.FragmentManager;
 import android.app.LoaderManager;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -51,6 +52,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private static final int EXISTING_LOADER = 0;
     private Uri currentUri;
 
+    public void setTime(int hour, int minute) {
+        updateTime(hour, minute);
+    }
+
+    public void setDate(int year, int month, int day) {
+        updateDate(year, month, day);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +91,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
             getLoaderManager().initLoader(0, null, this);
         }
+
+
 
 
         timeBtn.setOnClickListener(new View.OnClickListener() {
@@ -200,29 +211,36 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     @SuppressLint("ValidFragment")
-    public class TimePickerFragment extends DialogFragment
-            implements TimePickerDialog.OnTimeSetListener {
+    public static class TimePickerFragment extends DialogFragment
 
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current time as the default values for the picker
+        implements TimePickerDialog.OnTimeSetListener {
 
-            int hour = getArguments().getInt("hour");
-            int minute = getArguments().getInt("minute");
+            public interface OnDataPass {
+                public void onDataPass(String data);
 
-            // Create a new instance of TimePickerDialog and return it
-            return new TimePickerDialog(getActivity(), this, hour, minute,
-                    DateFormat.is24HourFormat(getActivity()));
-        }
+            }
 
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            // Do something with the time chosen by the user
-            updateTime(hourOfDay, minute);
-        }
+            @Override
+            public Dialog onCreateDialog(Bundle savedInstanceState) {
+                // Use the current time as the default values for the picker
+
+                int hour = getArguments().getInt("hour");
+                int minute = getArguments().getInt("minute");
+
+                // Create a new instance of TimePickerDialog and return it
+                return new TimePickerDialog(getActivity(), this, hour, minute,
+                        DateFormat.is24HourFormat(getActivity()));
+            }
+
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                // Do something with the time chosen by the user
+                ((EditorActivity) getActivity()).setTime(hourOfDay,minute);
+
+            }
     }
 
-    @SuppressLint("ValidFragment")
-    public class DatePickerFragment extends DialogFragment
+
+    public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
         @Override
@@ -239,7 +257,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
             // Do something with the date chosen by the user
-            updateDate(year, month, day);
+            //updateDate(year, month, day);
+            ((EditorActivity) getActivity()).setDate(year, month, day);
         }
     }
 
@@ -278,7 +297,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         timeBtn.setText(time);
     }
 
-    public void updateDate(int year, int month, int day) {
+    public  void updateDate(int year, int month, int day) {
         String date = "";
 
         if (month < 10) {
