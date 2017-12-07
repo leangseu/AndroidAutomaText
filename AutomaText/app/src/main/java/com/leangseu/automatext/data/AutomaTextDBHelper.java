@@ -12,7 +12,10 @@ import com.leangseu.automatext.data.AutomaTextContract.AutomaTextEntry;
 
 public class AutomaTextDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "automatext.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
+
+
+
 
     public AutomaTextDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -20,6 +23,7 @@ public class AutomaTextDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS automatext;");
         String SQL_CREATE_TABLE =  "CREATE TABLE " + AutomaTextEntry.TABLE_NAME + " ("
                 + AutomaTextEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + AutomaTextEntry.COLUMN_NUMBER + " INTEGER NOT NULL, "
@@ -35,6 +39,7 @@ public class AutomaTextDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS automatext;");
+        onCreate(sqLiteDatabase);
     }
 }

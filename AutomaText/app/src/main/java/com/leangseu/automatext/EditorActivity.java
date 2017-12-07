@@ -272,6 +272,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         } else if (hour == 0) {
             hour = 12;
             pm = false;
+        } else if (hour == 12) {
+            pm = true;
         }
 
         if (hour < 10) {
